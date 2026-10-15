@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>INOXNOW — Prototipo de continuidad espacial 2.5D</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --cream: #f6efe5;
+      --ink: #29252f;
+      --muted: #746e77;
+      --violet: #79649a;
+      --line: rgba(99, 78, 127, 0.34);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--cream); }
+
+    body {
+      margin: 0;
+      min-height: 600vh;
+      color: var(--ink);
+      background: var(--cream);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .stage {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 72% 42%, rgba(150, 124, 177, 0.07), transparent 34%),
+        var(--cream);
+    }
+
+    .world {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 2700px;
+      height: 760px;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+
+    .scene {
+      position: absolute;
+      top: 42px;
+      width: 1200px;
+      height: 675px;
+      margin: 0;
+      isolation: isolate;
+    }
+
+    .scene-a { left: 0; }
+    .scene-b { left: 1450px; }
+
+    .scene img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      user-select: none;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
+    .scene::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 0 0 52px 26px var(--cream);
+    }
+
+    .scene-label {
+      position: absolute;
+      z-index: 5;
+      top: 18px;
+      left: 28px;
+      padding: 9px 13px;
+      border: 1px solid rgba(121, 100, 154, 0.2);
+      border-radius: 999px;
+      background: rgba(255, 252, 247, 0.82);
+      color: var(--violet);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      backdrop-filter: blur(10px);
+    }
+
+    .route {
+      position: absolute;
+      z-index: 8;
+      left: 1125px;
+      top: 350px;
+      width: 740px;
+      height: 120px;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .route path {
+      fill: none;
+      stroke: var(--line);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-dasharray: 7 16;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .route circle {
+      fill: var(--cream);
+      stroke: var(--violet);
+      stroke-width: 4;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .hud {
+      position: fixed;
+      z-index: 20;
+      left: clamp(18px, 4vw, 62px);
+      top: clamp(18px, 5vh, 58px);
+      width: min(390px, calc(100vw - 36px));
+      padding: 18px 20px;
+      border: 1px solid rgba(82, 67, 101, 0.13);
+      border-radius: 20px;
+      background: rgba(255, 252, 247, 0.84);
+      box-shadow: 0 18px 46px rgba(58, 47, 69, 0.09);
+      backdrop-filter: blur(14px);
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: var(--violet);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 3vw, 38px);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+    }
+
+    .status {
+      min-height: 2.8em;
+      margin: 13px 0 15px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .scrubber {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--violet);
+    }
+
+    .legend {
+      position: fixed;
+      z-index: 20;
+      right: clamp(18px, 3vw, 42px);
+      bottom: clamp(18px, 3vw, 36px);
+      margin: 0;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 252, 247, 0.8);
+      color: var(--muted);
+      font-size: 12px;
+      box-shadow: 0 10px 30px rgba(58, 47, 69, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .clean .hud,
+    .clean .legend,
+    .clean .scene-label,
+    .clean .route {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      .hud { top: 14px; left: 14px; width: calc(100vw - 28px); }
+      .legend { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body { min-height: 100vh; }
+      .world { transition: none; }
+      .legend::after { content: " · movimiento reducido"; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="Demostración de transición espacial entre almacén y showroom">
+    <div class="world" id="world">
+      <figure class="scene scene-a">
+        <span class="scene-label">01 · Almacén</span>
+        <img src="../source-images/scene-01-warehouse.webp" alt="Diorama isométrico del almacén INOXNOW">
+      </figure>
+
+      <svg class="route" viewBox="0 0 740 120" aria-hidden="true">
+        <path d="M18 78 C 170 8, 545 8, 722 76"></path>
+        <circle cx="18" cy="78" r="9"></circle>
+        <circle cx="370" cy="26" r="7"></circle>
+        <circle cx="722" cy="76" r="9"></circle>
+      </svg>
+
+      <figure class="scene scene-b">
+        <span class="scene-label">02 · Showroom</span>
+        <img src="../source-images/scene-02-showroom.webp" alt="Diorama isométrico del showroom INOXNOW">
+      </figure>
+    </div>
+  </main>
+
+  <section class="hud" aria-live="polite">
+    <p class="eyebrow">Prototipo local · cero IA</p>
+    <h1>Dos lugares. Una cámara.</h1>
+    <p class="status" id="status">Almacén: la cámara mantiene la maqueta intacta.</p>
+    <label class="scrubber">
+      <span>01</span>
+      <input id="scrubber" type="range" min="0" max="1000" value="0" aria-label="Recorrido entre almacén y showroom">
+      <span>02</span>
+    </label>
+  </section>
+
+  <p class="legend">Desplázate hacia abajo o mueve el control · reversible</p>
+
+  <script>
+    const world = document.querySelector('#world');
+    const scrubber = document.querySelector('#scrubber');
+    const status = document.querySelector('#status');
+    const query = new URLSearchParams(location.search);
+    const fixedProgress = query.get('p');
+    const cleanMode = query.get('clean') === '1';
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (cleanMode) document.documentElement.classList.add('clean');
+
+    const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+    const mix = (from, to, amount) => from + (to - from) * amount;
+    const smooth = value => value * value * (3 - 2 * value);
+
+    function cameraAt(progress) {
+      const p = clamp(progress);
+      const travel = smooth(p);
+      const cameraX = mix(805, 2240, travel);
+      const cameraY = 382 - Math.sin(p * Math.PI) * 20;
+
+      let scale;
+      if (p < 0.28) scale = mix(1.02, 0.46, smooth(p / 0.28));
+      else if (p > 0.72) scale = mix(0.46, 1.02, smooth((p - 0.72) / 0.28));
+      else scale = 0.46;
+
+      return { cameraX, cameraY, scale };
+    }
+
+    function render(progress) {
+      const p = clamp(progress);
+      const camera = cameraAt(p);
+      const { cameraX, cameraY } = camera;
+      const scale = cleanMode ? Math.max(camera.scale, 0.72) : camera.scale;
+      world.style.transform = `translate(${-cameraX * scale}px, ${-cameraY * scale}px) scale(${scale})`;
+      scrubber.value = String(Math.round(p * 1000));
+
+      if (p < 0.24) status.textContent = 'Almacén: alejamiento controlado, sin alterar su arquitectura.';
+      else if (p < 0.72) status.textContent = 'Tránsito: ambos dioramas existen simultáneamente; la cámara cruza el espacio entre ellos.';
+      else status.textContent = 'Showroom: aproximación final sobre una segunda maqueta intacta.';
+    }
+
+    function progressFromScroll() {
+      const range = document.documentElement.scrollHeight - innerHeight;
+      return range > 0 ? scrollY / range : 0;
+    }
+
+    let raf = 0;
+    function onScroll() {
+      if (fixedProgress !== null || reducedMotion) return;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => render(progressFromScroll()));
+    }
+
+    scrubber.addEventListener('input', event => {
+      const p = Number(event.target.value) / 1000;
+      render(p);
+      if (fixedProgress === null && !reducedMotion) {
+        const range = document.documentElement.scrollHeight - innerHeight;
+        scrollTo({ top: range * p, behavior: 'auto' });
+      }
+    });
+
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+
+    if (fixedProgress !== null) render(Number(fixedProgress));
+    else if (reducedMotion) render(0.5);
+    else render(progressFromScroll());
+  </script>
+</body>
+</html>

@@ -9,7 +9,11 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "pnpm build && node scripts/verify-build.mjs",
+    "qa:browser": "node scripts/qa-scroll-world.mjs",
+    "media:encode": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/encode-web-videos.ps1",
+    "media:verify": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-web-media.ps1"
   },
   "dependencies": {
     "astro": "^7.3.8"

@@ -1,0 +1,140 @@
+[
+  {
+    "scene": "01",
+    "file": "scene-01-internal-motion-minimax-h3-2k-original.mp4",
+    "duration": 5.167,
+    "width": 2560,
+    "height": 1440,
+    "estimated_fps": 24,
+    "forward_frames_observed": 124,
+    "dropped_frames": 0,
+    "reverse_seek_completed": true,
+    "reverse_samples": [
+      4.9,
+      4.3,
+      3.7,
+      3.1,
+      2.5,
+      1.8,
+      1.2,
+      0.6,
+      0.05
+    ],
+    "decoded_audio_bytes": 493026
+  },
+  {
+    "scene": "02",
+    "file": "scene-02-internal-motion-minimax-h3-2k-original.mp4",
+    "duration": 5.167,
+    "width": 2560,
+    "height": 1440,
+    "estimated_fps": 24,
+    "forward_frames_observed": 124,
+    "dropped_frames": 0,
+    "reverse_seek_completed": true,
+    "reverse_samples": [
+      4.9,
+      4.3,
+      3.7,
+      3.1,
+      2.5,
+      1.8,
+      1.2,
+      0.6,
+      0.05
+    ],
+    "decoded_audio_bytes": 479684
+  },
+  {
+    "scene": "03",
+    "file": "scene-03-internal-motion-corrected-minimax-h3-2k-original.mp4",
+    "duration": 5.167,
+    "width": 2560,
+    "height": 1440,
+    "estimated_fps": 24,
+    "forward_frames_observed": 124,
+    "dropped_frames": 0,
+    "reverse_seek_completed": true,
+    "reverse_samples": [
+      4.9,
+      4.3,
+      3.7,
+      3.1,
+      2.5,
+      1.8,
+      1.2,
+      0.6,
+      0.05
+    ],
+    "decoded_audio_bytes": 474689
+  },
+  {
+    "scene": "04",
+    "file": "scene-04-internal-motion-minimax-h3-2k-original.mp4",
+    "duration": 5.167,
+    "width": 2560,
+    "height": 1440,
+    "estimated_fps": 24,
+    "forward_frames_observed": 124,
+    "dropped_frames": 0,
+    "reverse_seek_completed": true,
+    "reverse_samples": [
+      4.9,
+      4.3,
+      3.7,
+      3.1,
+      2.5,
+      1.8,
+      1.2,
+      0.6,
+      0.05
+    ],
+    "decoded_audio_bytes": 497340
+  },
+  {
+    "scene": "05",
+    "file": "scene-05-installation-motion-minimax-h3-2k-original.mp4",
+    "duration": 5.167,
+    "width": 2560,
+    "height": 1440,
+    "estimated_fps": 24,
+    "forward_frames_observed": 124,
+    "dropped_frames": 0,
+    "reverse_seek_completed": true,
+    "reverse_samples": [
+      4.9,
+      4.3,
+      3.7,
+      3.1,
+      2.5,
+      1.8,
+      1.2,
+      0.6,
+      0.05
+    ],
+    "decoded_audio_bytes": 477049
+  },
+  {
+    "scene": "06",
+    "file": "scene-06-internal-motion-minimax-h3-2k-original.mp4",
+    "duration": 5.167,
+    "width": 2560,
+    "height": 1440,
+    "estimated_fps": 24,
+    "forward_frames_observed": 124,
+    "dropped_frames": 0,
+    "reverse_seek_completed": true,
+    "reverse_samples": [
+      4.9,
+      4.3,
+      3.7,
+      3.1,
+      2.5,
+      1.8,
+      1.2,
+      0.6,
+      0.05
+    ],
+    "decoded_audio_bytes": 488320
+  }
+]

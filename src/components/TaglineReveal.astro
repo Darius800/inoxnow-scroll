@@ -1,0 +1,22 @@
+---
+const words = 'Acero que ordena el espacio. Equipamiento pensado para el ritmo de una cocina profesional.'.split(' ');
+---
+<section class="tagline-section" aria-label="La propuesta de INOXNOW">
+	<p class="tagline-reveal" data-tagline>{words.map((word) => <span>{word} </span>)}</p>
+</section>
+
+<script>
+	const tagline = document.querySelector<HTMLElement>('[data-tagline]');
+	if (tagline) {
+		const words = [...tagline.querySelectorAll('span')];
+		if (matchMedia('(prefers-reduced-motion: reduce)').matches) words.forEach((word) => word.classList.add('is-active'));
+		else {
+			const observer = new IntersectionObserver((entries) => {
+				if (!entries.some((entry) => entry.isIntersecting)) return;
+				words.forEach((word, index) => setTimeout(() => word.classList.add('is-active'), index * 38));
+				observer.disconnect();
+			}, { threshold: 0.35 });
+			observer.observe(tagline);
+		}
+	}
+</script>

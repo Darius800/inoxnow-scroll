@@ -1,46 +1,44 @@
-# Astro Starter Kit: Basics
+# INOXNOW Scroll World
+
+Landing corporativa en Astro con seis escenas audiovisuales y cinco transiciones espaciales 2.5D controladas por el progreso de scroll.
+
+## Desarrollo local
 
 ```sh
-pnpm create astro@latest -- --template basics
+pnpm install
+pnpm astro dev --background
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+URL local: `http://localhost:4321/`
 
-## 🚀 Project Structure
+Gestiona el servidor en segundo plano con:
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```sh
+pnpm astro dev status
+pnpm astro dev logs
+pnpm astro dev stop
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Verificación
 
-## 🧞 Commands
+```sh
+pnpm build
+node scripts/verify-build.mjs
+pnpm media:verify
+```
 
-All commands are run from the root of the project, from a terminal:
+La prueba de navegador requiere un Chromium con depuración remota en el puerto `9444`:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+```sh
+pnpm qa:browser
+```
 
-## 👀 Want to learn more?
+Los derivados web pueden regenerarse sin modificar los maestros con `pnpm media:encode`.
+FFmpeg y FFprobe deben estar disponibles en `PATH`; en este entorno se instaló FFmpeg
+9.0.2 mediante el paquete `Gyan.FFmpeg` de WinGet para el usuario actual.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Producción
+
+Define `PUBLIC_SITE_URL` con el origen definitivo, sin barra final, antes de compilar. Esa variable activa el canonical absoluto, `og:url` y la URL del sitemap en `robots.txt`.
+
+Antes de publicar también hay que configurar un canal corporativo para el formulario, aportar los datos de contacto verificados y publicar el aviso legal y la política de privacidad.

@@ -1,0 +1,8 @@
+[
+	{"file":"scene-01.mp4","source":"scene-01-internal-motion-minimax-h3-2k-original.mp4","videoCodec":"h264","width":1920,"height":1080,"audioStreams":0,"gop":8,"faststart":true},
+	{"file":"scene-02.mp4","source":"scene-02-internal-motion-minimax-h3-2k-original.mp4","videoCodec":"h264","width":1920,"height":1080,"audioStreams":0,"gop":8,"faststart":true},
+	{"file":"scene-03.mp4","source":"scene-03-internal-motion-corrected-minimax-h3-2k-original.mp4","videoCodec":"h264","width":1920,"height":1080,"audioStreams":0,"gop":8,"faststart":true},
+	{"file":"scene-04.mp4","source":"scene-04-internal-motion-minimax-h3-2k-original.mp4","videoCodec":"h264","width":1920,"height":1080,"audioStreams":0,"gop":8,"faststart":true},
+	{"file":"scene-05.mp4","source":"scene-05-installation-motion-minimax-h3-2k-original.mp4","videoCodec":"h264","width":1920,"height":1080,"audioStreams":0,"gop":8,"faststart":true},
+	{"file":"scene-06.mp4","source":"scene-06-internal-motion-minimax-h3-2k-original.mp4","videoCodec":"h264","width":1920,"height":1080,"audioStreams":0,"gop":8,"faststart":true}
+]

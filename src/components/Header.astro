@@ -1,0 +1,29 @@
+---
+const items = [
+	{ id: 'inicio', label: 'Inicio', scene: 0 },
+	{ id: 'equipamiento', label: 'Equipamiento', scene: 1 },
+	{ id: 'proceso', label: 'Proceso', scene: 3 },
+	{ id: 'cocina', label: 'Tu cocina', scene: 5 },
+	{ id: 'contacto', label: 'Contacto', href: '#contacto' },
+];
+---
+
+<header class="site-header" data-header>
+	<a class="brand" href="#inicio" data-scene-link="0" aria-label="INOXNOW, volver al inicio">INOXNOW<span>.</span></a>
+	<nav class="desktop-nav" aria-label="Navegación principal">
+		{items.map((item) => item.scene !== undefined
+			? <button type="button" data-scene-link={item.scene} data-nav-group={item.id}>{item.label}</button>
+			: <a href={item.href}>{item.label}</a>)}
+	</nav>
+	<a class="header-cta" href="#contacto">Hablemos</a>
+	<button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+		<span></span><span></span>
+	</button>
+	<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+		<nav aria-label="Navegación móvil">
+			{items.map((item, index) => item.scene !== undefined
+				? <button type="button" style={`--delay:${index * 60}ms`} data-scene-link={item.scene}>{item.label}</button>
+				: <a href={item.href} style={`--delay:${index * 60}ms`}>{item.label}</a>)}
+		</nav>
+	</div>
+</header>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>loading</title>
+  <style>
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #f7f0e7; }
+    canvas { display: block; width: 100vw; height: 100vh; }
+  </style>
+</head>
+<body>
+  <canvas id="frame" width="2560" height="1440" aria-label="Two separate INOXNOW diorama islands"></canvas>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const sceneA = params.get('a') || 'scene-01-warehouse.webp';
+    const sceneB = params.get('b') || 'scene-02-showroom.webp';
+    const tolerance = Number(params.get('tol') || 48);
+    const canvas = document.querySelector('#frame');
+    const ctx = canvas.getContext('2d');
+
+    function loadImage(name) {
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = reject;
+        image.src = `../source-images/${encodeURIComponent(name)}`;
+      });
+    }
+
+    function removeBorderBackground(image) {
+      const source = document.createElement('canvas');
+      source.width = image.naturalWidth;
+      source.height = image.naturalHeight;
+      const sourceCtx = source.getContext('2d', { willReadFrequently: true });
+      sourceCtx.drawImage(image, 0, 0);
+
+      const frame = sourceCtx.getImageData(0, 0, source.width, source.height);
+      const pixels = frame.data;
+      const width = source.width;
+      const height = source.height;
+      const corners = [[1, 1], [width - 2, 1], [1, height - 2], [width - 2, height - 2]];
+      const background = [0, 1, 2].map(channel => Math.round(
+        corners.reduce((total, [x, y]) => total + pixels[(y * width + x) * 4 + channel], 0) / corners.length
+      ));
+
+      const visited = new Uint8Array(width * height);
+      const queue = new Int32Array(width * height);
+      let head = 0;
+      let tail = 0;
+      const toleranceSquared = tolerance * tolerance;
+
+      function distanceSquared(index) {
+        const offset = index * 4;
+        const red = pixels[offset] - background[0];
+        const green = pixels[offset + 1] - background[1];
+        const blue = pixels[offset + 2] - background[2];
+        return red * red + green * green + blue * blue;
+      }
+
+      function enqueue(index) {
+        if (visited[index] || distanceSquared(index) > toleranceSquared) return;
+        visited[index] = 1;
+        queue[tail++] = index;
+      }
+
+      for (let x = 0; x < width; x += 1) {
+        enqueue(x);
+        enqueue((height - 1) * width + x);
+      }
+      for (let y = 0; y < height; y += 1) {
+        enqueue(y * width);
+        enqueue(y * width + width - 1);
+      }
+
+      while (head < tail) {
+        const index = queue[head++];
+        const x = index % width;
+        const y = Math.floor(index / width);
+        if (x > 0) enqueue(index - 1);
+        if (x + 1 < width) enqueue(index + 1);
+        if (y > 0) enqueue(index - width);
+        if (y + 1 < height) enqueue(index + width);
+      }
+
+      let minX = width;
+      let minY = height;
+      let maxX = 0;
+      let maxY = 0;
+      for (let index = 0; index < visited.length; index += 1) {
+        const offset = index * 4;
+        if (visited[index]) {
+          const distance = Math.sqrt(distanceSquared(index));
+          pixels[offset + 3] = distance < 18 ? 0 : Math.round(255 * (distance - 18) / Math.max(1, tolerance - 18));
+        }
+        if (pixels[offset + 3] > 28) {
+          const x = index % width;
+          const y = Math.floor(index / width);
+          minX = Math.min(minX, x);
+          minY = Math.min(minY, y);
+          maxX = Math.max(maxX, x);
+          maxY = Math.max(maxY, y);
+        }
+      }
+      sourceCtx.putImageData(frame, 0, 0);
+      return { canvas: source, bounds: { x: minX, y: minY, width: maxX - minX + 1, height: maxY - minY + 1 } };
+    }
+
+    function drawIsland(asset, centerX) {
+      const { bounds } = asset;
+      const scale = Math.min(820 / bounds.width, 600 / bounds.height);
+      const width = bounds.width * scale;
+      const height = bounds.height * scale;
+      const x = centerX - width / 2;
+      const y = 1015 - height;
+
+      ctx.save();
+      ctx.filter = 'blur(22px)';
+      ctx.fillStyle = 'rgba(100, 76, 54, 0.12)';
+      ctx.beginPath();
+      ctx.ellipse(centerX, 1032, width * 0.38, 36, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.drawImage(
+        asset.canvas,
+        bounds.x,
+        bounds.y,
+        bounds.width,
+        bounds.height,
+        x,
+        y,
+        width,
+        height
+      );
+    }
+
+    Promise.all([loadImage(sceneA), loadImage(sceneB)]).then(([first, second]) => {
+      ctx.fillStyle = '#f7f0e7';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      drawIsland(removeBorderBackground(first), 760);
+      drawIsland(removeBorderBackground(second), 1780);
+      document.title = 'frame-ready';
+    }).catch(error => {
+      document.title = 'frame-error';
+      document.body.dataset.error = String(error);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>INOXNOW · Prototipo audiovisual completo</title>
+  <style>
+    :root{color-scheme:light;--bg:#f7f0e7;--ink:#2c2830;--purple:#715497}
+    *{box-sizing:border-box}html{scroll-behavior:auto}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,sans-serif;overflow-x:hidden}
+    .stage{position:fixed;inset:0;background:var(--bg);overflow:hidden}.media,.poster,.bridge,.bridge-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .12s linear}
+    .media{z-index:2}.poster{z-index:1}.bridge,.bridge-poster{z-index:3}.is-visible{opacity:1}.media,.poster,.bridge-poster{object-position:center}
+    .hud{position:fixed;inset:0;z-index:10;pointer-events:none}.top{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;background:linear-gradient(#f7f0e7e8,transparent)}
+    .brand{font-weight:800;letter-spacing:.08em}.status{font-size:.8rem;background:#fffbd;border:1px solid #71549733;border-radius:99px;padding:7px 12px}
+    .nav{position:absolute;right:22px;top:50%;transform:translateY(-50%);display:grid;gap:9px;pointer-events:auto}.nav button{border:0;background:#fffdb;color:var(--ink);border-radius:99px;padding:8px 12px;cursor:pointer}.nav button[aria-current=true]{background:var(--purple);color:white}
+    .caption{position:absolute;left:clamp(18px,5vw,72px);bottom:clamp(30px,10vh,110px);max-width:34rem;background:#f7f0e7d9;padding:14px 18px;border-radius:14px;backdrop-filter:blur(8px)}.caption strong{display:block;font-size:clamp(1.2rem,2.8vw,2.4rem)}
+    .progress{position:absolute;left:0;right:0;bottom:0;height:4px;background:#71549722}.progress i{display:block;width:100%;height:100%;background:var(--purple);transform-origin:left;transform:scaleX(0)}
+    .track{height:1200vh}.fallback{position:fixed;inset:auto 20px 20px auto;z-index:20;background:#8b2f2f;color:white;padding:8px 11px;border-radius:8px;display:none}.fallback.is-visible{display:block}
+    @media(max-width:760px){.nav{right:8px}.nav button{font-size:0;width:34px;height:34px;padding:0}.nav button::after{content:attr(data-scene);font-size:.75rem}.caption{right:56px;bottom:50px}.track{height:1100vh}}
+    @media(prefers-reduced-motion:reduce){.media,.bridge{display:none}.poster,.bridge-poster{transition:none}.track{height:660vh}}
+  </style>
+</head>
+<body>
+  <main id="app" aria-label="Prototipo técnico audiovisual INOXNOW">
+    <div class="stage" aria-live="off">
+      <canvas class="bridge" width="2560" height="1440" aria-label="Transición espacial reversible"></canvas>
+    </div>
+    <div class="hud">
+      <div class="top"><span class="brand">INOXNOW · QA</span><span class="status">Inicializando…</span></div>
+      <nav class="nav" aria-label="Escenas"></nav>
+      <div class="caption"><small></small><strong></strong><span>Usa scroll, trackpad, flechas, Re Pág/Av Pág, Inicio o Fin.</span></div>
+      <div class="progress" aria-label="Progreso del recorrido"><i></i></div>
+    </div>
+    <div class="track" aria-hidden="true"></div>
+    <div class="fallback" role="status">Se muestra el fotograma estático: el vídeo no pudo cargarse.</div>
+  </main>
+  <script type="module" src="./full-scroll-world-audit.js"></script>
+</body>
+</html>

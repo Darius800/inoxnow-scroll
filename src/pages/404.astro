@@ -1,0 +1,11 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Página no encontrada | INOXNOW" description="La página solicitada no está disponible.">
+	<main class="not-found"><a class="brand" href="/">INOXNOW<span>.</span></a><p class="eyebrow">Error 404</p><h1>Este espacio todavía está vacío.</h1><p>La página que buscas no está disponible.</p><a class="back-home" href="/">Volver al recorrido</a></main>
+</Layout>
+<style>
+	.not-found { display: grid; min-height: 100vh; place-content: center; justify-items: start; padding: 24px; background: #f6f0e7; }
+	.not-found .brand { margin-bottom: 64px; } .not-found h1 { max-width: 680px; margin: 0; font-size: 60px; line-height: 1; font-weight: 600; letter-spacing: -.04em; text-wrap: balance; }
+	.not-found > p:not(.eyebrow) { color: #655f68; font-size: 18px; line-height: 28px; } .back-home { margin-top: 24px; padding: 8px 12px; border-radius: 999px; color: white; background: #72528c; font-weight: 600; text-decoration: none; }
+</style>

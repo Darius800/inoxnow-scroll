@@ -1,0 +1,176 @@
+{
+  "url": "http://127.0.0.1:8765/media/prototypes/full-scroll-world-audit.html",
+  "forward": [
+    {
+      "expected": 0,
+      "actual": 0
+    },
+    {
+      "expected": 1,
+      "actual": 1
+    },
+    {
+      "expected": 2,
+      "actual": 2
+    },
+    {
+      "expected": 3,
+      "actual": 3
+    },
+    {
+      "expected": 4,
+      "actual": 4
+    },
+    {
+      "expected": 5,
+      "actual": 5
+    },
+    {
+      "expected": 6,
+      "actual": 6
+    },
+    {
+      "expected": 7,
+      "actual": 7
+    },
+    {
+      "expected": 8,
+      "actual": 8
+    },
+    {
+      "expected": 9,
+      "actual": 9
+    },
+    {
+      "expected": 10,
+      "actual": 10
+    }
+  ],
+  "reverse": [
+    {
+      "expected": 10,
+      "actual": 10
+    },
+    {
+      "expected": 9,
+      "actual": 9
+    },
+    {
+      "expected": 8,
+      "actual": 8
+    },
+    {
+      "expected": 7,
+      "actual": 7
+    },
+    {
+      "expected": 6,
+      "actual": 6
+    },
+    {
+      "expected": 5,
+      "actual": 5
+    },
+    {
+      "expected": 4,
+      "actual": 4
+    },
+    {
+      "expected": 3,
+      "actual": 3
+    },
+    {
+      "expected": 2,
+      "actual": 2
+    },
+    {
+      "expected": 1,
+      "actual": 1
+    },
+    {
+      "expected": 0,
+      "actual": 0
+    }
+  ],
+  "fast_scroll": {
+    "back_segment": 0,
+    "title": "qa-ready",
+    "responsive": true
+  },
+  "keyboard": {
+    "end_segment": 10,
+    "home_segment": 0
+  },
+  "blob_seekable": [
+    {
+      "scene": "01",
+      "src": true,
+      "ranges": 1,
+      "end": 5.167,
+      "ready": true,
+      "failed": false
+    },
+    {
+      "scene": "02",
+      "src": true,
+      "ranges": 1,
+      "end": 5.167,
+      "ready": true,
+      "failed": false
+    },
+    {
+      "scene": "03",
+      "src": true,
+      "ranges": 1,
+      "end": 5.167,
+      "ready": true,
+      "failed": false
+    },
+    {
+      "scene": "04",
+      "src": true,
+      "ranges": 1,
+      "end": 5.167,
+      "ready": true,
+      "failed": false
+    },
+    {
+      "scene": "05",
+      "src": true,
+      "ranges": 1,
+      "end": 5.167,
+      "ready": true,
+      "failed": false
+    },
+    {
+      "scene": "06",
+      "src": true,
+      "ranges": 1,
+      "end": 5.167,
+      "ready": true,
+      "failed": false
+    }
+  ],
+  "console_errors": [],
+  "reduced_motion": {
+    "reduced": true,
+    "ready": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "videos": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "title": "qa-ready"
+  },
+  "destroyed": true
+}

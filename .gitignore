@@ -6,6 +6,10 @@ dist/
 
 # dependencies
 node_modules/
+.npm-cache/
+.pnpm-store/
+.agents/
+skills-lock.json
 
 # logs
 npm-debug.log*
@@ -19,6 +23,14 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# local browser QA profiles and codec comparison renders
+media/reports/*-live-qa/
+media/web-ready/scene-*-crf*.mp4
+media/prototypes/chrome-cdp-*/
+media/prototypes/chrome-qa-profile/
+media/reports/chrome-landing-qa/
+media/reports/edge-landing-qa/
 
 # jetbrains setting folder
 .idea/

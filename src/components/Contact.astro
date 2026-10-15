@@ -1,0 +1,43 @@
+<section class="closing" id="contacto" aria-labelledby="contact-title">
+	<div class="closing-intro reveal">
+		<p class="eyebrow">El siguiente espacio</p>
+		<h2 id="contact-title">¿Preparando tu próxima cocina profesional?</h2>
+		<p>Descubre cómo el equipamiento de acero inoxidable de INOXNOW puede formar parte de tu espacio de trabajo.</p>
+	</div>
+	<div class="contact-panel reveal">
+		<div class="contact-copy">
+			<p class="contact-index">Contacto</p>
+			<h3>Cuéntanos qué necesita tu espacio.</h3>
+			<p>Deja preparada tu consulta. El canal de entrega corporativo todavía no está configurado en esta versión local.</p>
+		</div>
+		<form class="contact-form" data-contact-form novalidate>
+			<label>Nombre y empresa<input name="name" autocomplete="organization" required /></label>
+			<label>Correo de contacto<input type="email" name="email" autocomplete="email" required /></label>
+			<label>Cuéntanos sobre el espacio<textarea name="message" rows="4" required></textarea></label>
+			<button type="submit">Contactar con INOXNOW</button>
+			<p class="form-status" data-form-status aria-live="polite">La entrega del formulario se activará al configurar un canal corporativo.</p>
+		</form>
+	</div>
+</section>
+
+<script>
+	const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+	const status = document.querySelector<HTMLElement>('[data-form-status]');
+	form?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		form.querySelectorAll('[aria-invalid="true"]').forEach((field) => field.removeAttribute('aria-invalid'));
+		const invalid = [...form.elements].filter((element) => element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement).find((field) => !field.checkValidity());
+		if (invalid instanceof HTMLInputElement || invalid instanceof HTMLTextAreaElement) {
+			invalid.setAttribute('aria-invalid', 'true');
+			invalid.focus();
+			if (status) { status.textContent = invalid.type === 'email' ? 'Introduce un correo válido.' : 'Completa todos los campos antes de continuar.'; status.dataset.state = 'error'; }
+			return;
+		}
+		if (status) { status.textContent = 'Consulta preparada. Falta configurar el canal corporativo para poder enviarla.'; status.dataset.state = 'pending'; }
+	});
+
+	const revealObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
+		if (entry.isIntersecting) { entry.target.classList.add('is-visible'); revealObserver.unobserve(entry.target); }
+	}), { threshold: 0.16 });
+	document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
+</script>

@@ -1,0 +1,57 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>INOXNOW pilot frame capture</title>
+<style>
+  html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #f7f0e5; }
+  video, canvas { display: block; width: 100vw; height: 100vh; object-fit: contain; }
+  pre { position: fixed; inset: 0; margin: 0; padding: 16px; background: white; color: black; font: 16px monospace; }
+</style>
+<video id="video" muted playsinline preload="auto"></video>
+<canvas id="canvas" hidden></canvas>
+<pre id="meta" hidden></pre>
+<script>
+  const params = new URLSearchParams(location.search);
+  const video = document.querySelector('#video');
+  const canvas = document.querySelector('#canvas');
+  const meta = document.querySelector('#meta');
+  const target = Number(params.get('t') || 0);
+  const clip = params.get('src') || 'pilot-01-to-02-minimax-h3-2k-original.mp4';
+  video.src = `../generated-clips/${encodeURIComponent(clip)}`;
+  video.addEventListener('loadedmetadata', () => {
+    meta.textContent = JSON.stringify({
+      duration: video.duration,
+      width: video.videoWidth,
+      height: video.videoHeight,
+      muted: video.muted
+    });
+    if (params.has('meta')) {
+      video.hidden = true;
+      meta.hidden = false;
+      document.title = 'metadata-ready';
+      return;
+    }
+    video.currentTime = Math.min(target, Math.max(0, video.duration - 0.04));
+  });
+  let captured = false;
+  function captureDecodedFrame() {
+    if (captured || video.readyState < 2) return;
+    captured = true;
+    video.pause();
+    document.title = 'frame-ready';
+  }
+  let priming = false;
+  async function scheduleCapture() {
+    if (params.has('meta')) return;
+    if (priming || captured || video.readyState < 2) return;
+    priming = true;
+    try {
+      await video.play();
+      if ('requestVideoFrameCallback' in video) video.requestVideoFrameCallback(captureDecodedFrame);
+      else setTimeout(captureDecodedFrame, 200);
+    } catch (error) {
+      window.captureError = String(error);
+      priming = false;
+    }
+  }
+  video.addEventListener('seeked', scheduleCapture);
+</script>
